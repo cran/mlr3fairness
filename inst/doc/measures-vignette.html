@@ -530,14 +530,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb11-6" title="6">)</a>
 <a class="sourceLine" id="cb11-7" title="7"></a>
 <a class="sourceLine" id="cb11-8" title="8">bmr =<span class="st"> </span><span class="kw">benchmark</span>(design)</a>
-<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt; INFO  [18:31:43.775] [mlr3] Running benchmark with 6 resampling iterations </span></a>
-<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; INFO  [18:31:43.782] [mlr3] Applying learner &#39;classif.rpart&#39; on task &#39;compas&#39; (iter 3/3) </span></a>
-<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt; INFO  [18:31:43.948] [mlr3] Applying learner &#39;classif.ranger&#39; on task &#39;compas&#39; (iter 1/3) </span></a>
-<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt; INFO  [18:31:45.625] [mlr3] Applying learner &#39;classif.rpart&#39; on task &#39;compas&#39; (iter 1/3) </span></a>
-<a class="sourceLine" id="cb11-13" title="13"><span class="co">#&gt; INFO  [18:31:45.834] [mlr3] Applying learner &#39;classif.rpart&#39; on task &#39;compas&#39; (iter 2/3) </span></a>
-<a class="sourceLine" id="cb11-14" title="14"><span class="co">#&gt; INFO  [18:31:45.991] [mlr3] Applying learner &#39;classif.ranger&#39; on task &#39;compas&#39; (iter 2/3) </span></a>
-<a class="sourceLine" id="cb11-15" title="15"><span class="co">#&gt; INFO  [18:31:47.761] [mlr3] Applying learner &#39;classif.ranger&#39; on task &#39;compas&#39; (iter 3/3) </span></a>
-<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt; INFO  [18:31:49.434] [mlr3] Finished benchmark</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt; INFO  [14:29:36.822] [mlr3] Running benchmark with 6 resampling iterations </span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; INFO  [14:29:36.826] [mlr3] Applying learner &#39;classif.ranger&#39; on task &#39;compas&#39; (iter 1/3) </span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt; INFO  [14:29:38.476] [mlr3] Applying learner &#39;classif.ranger&#39; on task &#39;compas&#39; (iter 2/3) </span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt; INFO  [14:29:40.549] [mlr3] Applying learner &#39;classif.ranger&#39; on task &#39;compas&#39; (iter 3/3) </span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">#&gt; INFO  [14:29:42.148] [mlr3] Applying learner &#39;classif.rpart&#39; on task &#39;compas&#39; (iter 1/3) </span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co">#&gt; INFO  [14:29:42.326] [mlr3] Applying learner &#39;classif.rpart&#39; on task &#39;compas&#39; (iter 2/3) </span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="co">#&gt; INFO  [14:29:42.469] [mlr3] Applying learner &#39;classif.rpart&#39; on task &#39;compas&#39; (iter 3/3) </span></a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt; INFO  [14:29:42.620] [mlr3] Finished benchmark</span></a>
 <a class="sourceLine" id="cb11-17" title="17"></a>
 <a class="sourceLine" id="cb11-18" title="18"><span class="co"># Operations have been set to `groupwise_quotient()`</span></a>
 <a class="sourceLine" id="cb11-19" title="19">measures =<span class="st"> </span><span class="kw">list</span>( <span class="kw">msr</span>(<span class="st">&quot;fairness.tpr&quot;</span>), <span class="kw">msr</span>(<span class="st">&quot;fairness.npv&quot;</span>), <span class="kw">msr</span>(<span class="st">&quot;fairness.acc&quot;</span>), <span class="kw">msr</span>(<span class="st">&quot;classif.acc&quot;</span>) )</a>
@@ -561,8 +561,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb11-37" title="37"><span class="co">#&gt; &#39;classif.rpart&#39; only predicted on sets &#39;train&#39;, &#39;predict&#39;</span></a>
 <a class="sourceLine" id="cb11-38" title="38">tab</a>
 <a class="sourceLine" id="cb11-39" title="39"><span class="co">#&gt;    nr      resample_result task_id     learner_id resampling_id iters</span></a>
-<a class="sourceLine" id="cb11-40" title="40"><span class="co">#&gt; 1:  1 &lt;ResampleResult[22]&gt;  compas classif.ranger            cv     3</span></a>
-<a class="sourceLine" id="cb11-41" title="41"><span class="co">#&gt; 2:  2 &lt;ResampleResult[22]&gt;  compas  classif.rpart            cv     3</span></a>
+<a class="sourceLine" id="cb11-40" title="40"><span class="co">#&gt; 1:  1 &lt;ResampleResult[21]&gt;  compas classif.ranger            cv     3</span></a>
+<a class="sourceLine" id="cb11-41" title="41"><span class="co">#&gt; 2:  2 &lt;ResampleResult[21]&gt;  compas  classif.rpart            cv     3</span></a>
 <a class="sourceLine" id="cb11-42" title="42"><span class="co">#&gt;    fairness.tpr fairness.npv fairness.acc classif.acc</span></a>
 <a class="sourceLine" id="cb11-43" title="43"><span class="co">#&gt; 1:          NaN          NaN          NaN         NaN</span></a>
 <a class="sourceLine" id="cb11-44" title="44"><span class="co">#&gt; 2:          NaN          NaN          NaN         NaN</span></a></code></pre></div>

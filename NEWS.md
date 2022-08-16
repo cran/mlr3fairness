@@ -1,3 +1,7 @@
+# mlr3fairness 0.3.1
+
+* Minor update to improve stability of unit tests and vignette building on CRAN.
+
 # mlr3fairness 0.3.0
 
 * CRAN release version
