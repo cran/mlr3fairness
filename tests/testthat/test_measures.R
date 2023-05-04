@@ -36,6 +36,7 @@ test_that("dictionary constructors work", {
 })
 
 test_that("fairness measures work as expcted", {
+  skip_if_not_installed("rpart")
   tsk = tsk("compas")
   prds = list(
     lrn("classif.rpart")$train(tsk)$predict(tsk),
@@ -126,7 +127,7 @@ test_that("fairness works on non-binary target", {
   expect_error(prd$score(msr("fairness.acc"), task = task), "role 'pta'", fixed = TRUE)
   task$col_roles$pta = "pta"
   expect_number(prd$score(msr("fairness.acc"), task = task), lower = 0, upper = 1)
-  expect_warning(prd$score(msr("fairness.tpr"), task = task), "is missing properties")
+  suppressWarnings(expect_warning(prd$score(msr("fairness.tpr"), task = task), "is missing properties"))
 })
 
 
@@ -210,7 +211,7 @@ test_that("fairness constraint measures - simulated data", {
 })
 
 test_that("Args are passed on correctly", {
-
+  skip_if_not_installed("rpart")
   MeasureTestArgs = R6::R6Class("MeasureTestArgs",
     inherit = mlr3::Measure,
     public = list(
@@ -238,7 +239,7 @@ test_that("Args are passed on correctly", {
   )
 
   mta = MeasureTestArgs$new()
-  t = tsk("compas")
+  t = suppressWarnings(tsk("compas"))
   l = lrn("classif.rpart")
   prd = l$train(t)$predict(t)
   prd$score(mta, task = t, train_set = 1:10)
@@ -272,7 +273,7 @@ test_that("fairness measures work as expected - simulated data", {
         }
         if (tsk$properties == "multiclass") {
           if ("twoclass" %in% ms$base_measure$task_properties) {
-            expect_warning(prd$score(measures = ms, task = tsk))
+            suppressWarnings(expect_warning(prd$score(measures = ms, task = tsk)))
           } else {
             out = prd$score(measures = ms, task = tsk)
             expect_number(out, lower = 0, upper = Inf, na.ok = TRUE)

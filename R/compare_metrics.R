@@ -5,6 +5,8 @@
 #' @description
 #' Compare learners with respect to to one or multiple metrics.
 #' Metrics can but be but are not limited to fairness metrics.
+#' 
+#' @template pta
 #'
 #' @param object ([PredictionClassif] | [BenchmarkResult] | [ResampleResult])\cr
 #'   The object to create a plot for.
@@ -26,9 +28,10 @@
 #'     The data task that contains the protected column, only required when object is ([PredictionClassif]).
 #'
 #' @export
-#' @return A 'ggplo2' object.
+#' @return A 'ggplot2' object.
 #' @examples
-#' library(mlr3learners)
+#' library("mlr3")
+#' library("mlr3learners")
 #'
 #' # Setup the Fairness Measures and tasks
 #' task = tsk("adult_train")$filter(1:500)

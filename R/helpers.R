@@ -34,9 +34,9 @@ compute_reweighing_weights = function(task, alpha = 1) {
   tab[, wt := (1 - alpha) * wt + alpha * wt]
 
   # Ensure correct feature type
-  if (inherits(dt[[pta]], "integer")) {
+  if (all(map_lgl(pta, function(x) {inherits(dt[[x]], "integer")}))) {
     set(tab, j = task$col_roles$pta, value = as.integer(tab[[pta]]))
-  } else if (inherits(dt[[pta]], "numeric")) {
+  } else if (all(map_lgl(pta, function(x) {inherits(dt[[x]], "numeric")}))) {
     set(tab, j = task$col_roles$pta, value = as.numeric(tab[[pta]]))
   }
 
@@ -152,7 +152,8 @@ get_pta = function(task, rows = NULL, intersect = FALSE) {
 #' @return 
 #' `data.frame` containing the reported information
 #' @examples
-#'   task_summary(tsk("adult_train"))
+#' library("mlr3")
+#' task_summary(tsk("adult_train"))
 #' @export
 task_summary = function(task) {
   # Create the report attributes
@@ -163,7 +164,7 @@ task_summary = function(task) {
     "Number of features: ",
     "Target Name: ",
     "Feature Names: ",
-    "The Protected Attribute: "
+    "Protected Attribute(s): "
   )
 
   # Create the skeleton of summary table

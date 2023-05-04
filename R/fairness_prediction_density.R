@@ -6,6 +6,8 @@
 #' The plot is a combination of boxplot and violin plot.
 #' The y-axis shows the levels in protected columns. And the x-axis shows the predicted probability.
 #' The title for the plot will demonstrate which class for predicted probability.
+#' 
+#' @template pta
 #'
 #' @param object ([PredictionClassif] | [ResampleResult] | [BenchmarkResult])\cr
 #'   The binary class prediction object that will be evaluated.
@@ -20,7 +22,8 @@
 #' @export
 #' @return A 'ggplot2' object.
 #' @examples
-#' library(mlr3learners)
+#' library("mlr3")
+#' library("mlr3learners")
 #'
 #' task = tsk("adult_train")$filter(1:500)
 #' learner = lrn("classif.rpart", predict_type = "prob", cp = 0.001)

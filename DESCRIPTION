@@ -1,7 +1,7 @@
 Package: mlr3fairness
 Type: Package
 Title: Fairness Auditing and Debiasing for 'mlr3'
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: 
     c(
       person(given = "Florian",
@@ -32,19 +32,21 @@ BugReports: https://github.com/mlr-org/mlr3fairness/issues
 License: LGPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.5.0), mlr3 (>= 0.13.0)
+Depends: R (>= 3.4.0)
 Imports: checkmate, R6 (>= 2.4.1), data.table (>= 1.13.6), paradox,
-        mlr3measures, mlr3misc, mlr3pipelines, ggplot2
-Suggests: mlr3viz, rmarkdown, knitr, rpart, testthat (>= 3.0.0),
-        patchwork, ranger, mlr3learners, linprog, posterdown,
-        kableExtra, fairml, iml
-RoxygenNote: 7.2.1
+        mlr3 (>= 0.13.0), mlr3measures, mlr3misc, mlr3pipelines,
+        mlr3learners, rlang, ggplot2
+Suggests: testthat (>= 3.1.0), patchwork, rpart, ranger, mlr3viz,
+        linprog, rmarkdown, knitr, posterdown, kableExtra, fairml, iml
+RoxygenNote: 7.2.3
+Config/testthat/edition: 3
+Config/testthat/parallel: false
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-08-16 12:30:50 UTC; flo
+Packaged: 2023-05-04 20:45:55 UTC; flo
 Author: Florian Pfisterer [cre, aut] (<https://orcid.org/0000-0001-8867-762X>),
   Wei Siyi [aut],
   Michel Lang [aut] (<https://orcid.org/0000-0001-9754-0393>)
 Maintainer: Florian Pfisterer <pfistererf@googlemail.com>
 Repository: CRAN
-Date/Publication: 2022-08-16 13:50:02 UTC
+Date/Publication: 2023-05-04 23:00:02 UTC

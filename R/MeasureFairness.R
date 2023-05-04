@@ -14,9 +14,12 @@
 #'
 #' Some popular predefined measures can be found in the [dictionary][mlr3misc::Dictionary] [mlr_measures].
 #'
+#' @template pta
+#' 
 #' @seealso [MeasureFairnessComposite]
 #' @export
 #' @examples
+#' library("mlr3")
 #' # Create MeasureFairness to measure the Predictive Parity.
 #' t = tsk("adult_train")
 #' learner = lrn("classif.rpart", cp = .01)

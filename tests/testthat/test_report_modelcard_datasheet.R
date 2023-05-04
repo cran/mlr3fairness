@@ -1,6 +1,7 @@
 test_that("model cards", {
   skip_on_cran()
   skip_if_not_installed("rmarkdown")
+  skip_if_not_installed("posterdown")
   skip_if_not(rmarkdown::pandoc_available())
   tmp = tempdir()
   tmp = paste0(tmp, "/report")
@@ -16,6 +17,7 @@ test_that("model cards", {
 test_that("datasheets", {
   skip_on_cran()
   skip_if_not_installed("rmarkdown")
+  skip_if_not_installed("posterdown")
   skip_if_not(rmarkdown::pandoc_available())
   tmp = tempdir()
   tmp = paste0(tmp, "/report")
@@ -31,11 +33,12 @@ test_that("datasheets", {
 test_that("fairness_report", {
   skip_on_cran()
   skip_if_not_installed("rmarkdown")
+  skip_if_not_installed("kableExtra")
   skip_if_not(rmarkdown::pandoc_available())
   tmp = tempdir()
   tmp = paste0(tmp, "/report")
   unlink(tmp, recursive = TRUE)
-  task = tsk("compas")$filter(1:500)$select(c("age", "decile_score","race", "sex", "c_charge_degree"))
+  task = suppressWarnings(tsk("compas")$filter(1:500)$select(c("age", "decile_score","race", "sex", "c_charge_degree")))
   learner = lrn("classif.rpart", predict_type = "prob")
   rr = resample(task, learner, rsmp("cv", folds = 5))
   report_fairness(tmp, list(task = task, resample_result = rr, foo = 1))

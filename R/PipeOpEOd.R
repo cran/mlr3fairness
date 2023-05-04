@@ -82,7 +82,8 @@
 #' @seealso https://mlr3book.mlr-org.com/list-pipeops.html
 #' @export
 #' @examples
-#' library(mlr3pipelines)
+#' library("mlr3")
+#' library("mlr3pipelines")
 #'
 #' eod = po("EOd")
 #' learner_po = po("learner_cv",
@@ -126,7 +127,7 @@ PipeOpEOd = R6Class("PipeOpEOd",
 
   private = list(
     .train = function(input) {
-      task = assert_pta_task(input[[1L]])
+      task = assert_pta_task(input[[1L]], single = TRUE)
       params = self$param_set$get_values(tags = "train")
       # FIXME: which_max? -> random sampling in case of ties
       private$.privileged = params$privileged %??% names(which.max(table(task$data(cols = task$col_roles$pta))))
@@ -135,7 +136,7 @@ PipeOpEOd = R6Class("PipeOpEOd",
     },
 
     .predict = function(input) {
-      task = assert_pta_task(input[[1L]])
+      task = assert_pta_task(input[[1L]], single = TRUE)
       flips = self$state$flip_probs
       # Widely used vars
       pta_ = task$col_roles$pta

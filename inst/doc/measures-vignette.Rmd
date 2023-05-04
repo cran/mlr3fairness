@@ -1,10 +1,15 @@
 ---
 title: "Fairness Metrics"
+preamble: |
+  \usepackage{longtable}
+  \usepackage{bbm}
+bibliography: '`r system.file("references.bib", package="mlr3fairness")`'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Fairness Metrics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  
 ---
 
 ```{r, include = FALSE}
@@ -15,19 +20,22 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-# FairnessMeasures
+# Fairness Measures
 
-Fairness measures (or metrics) allow us to assess and audit for possible biases in a trained model. There are several types of metrics that are widely used in order to assess a model's fairness. They can be coarsely classified into three groups:
+Fairness measures (or metrics) allow us to assess and audit for possible biases in a trained model. 
+There are several types of metrics that are widely used in order to assess a model's fairness. 
+They can be coarsely classified into three groups:
 
-- **Statistical Group Fairness Metrics**: Given a set of predictions from our model, we assess for differences in one or multiple metrics across groups.
+- **Statistical Group Fairness Metrics**: Given a set of predictions from our model, we assess for differences in one or multiple metrics across groups given by a *protected attribute* [@fairmlbook; @hardt2016equality]. 
 
-- **Individual Fairness**: Basically requires that similar people are treated similar independent of the protected attribute. This is more of a philosophical concept and concrete implementations of this fairness notion are not immediately clear.
+- **Individual Fairness**: Basically requires that similar people are treated similar independent of the protected attribute [@dwork2012].
+  We will briefly introduce individual fairness in a dedicated section below.
 
-- **Causal Fairness Notions**: An important realization in the context of Fairness is, that whether a process is fair is often subject to the underlying causal directed acyclic graph (DAG). Knowledge of the DAG allows for causally assessing reasons for (un-)fairness. Since DAG's are often hard to construct for a given dataset, we currently do not provide any causal fairness metrics.
+- **Causal Fairness Notions**: An important realization in the context of Fairness is, that whether a process is fair is often subject to the underlying causal directed acyclic graph (DAG). Knowledge of the DAG allows for causally assessing reasons for (un-)fairness. Since DAG's are often hard to construct for a given dataset, `mlr3fairness` currently does not provide any causal fairness metrics [@kilbertus2017avoiding].
 
-## Core Idea: Statistical Group Fairness
+## Statistical Group Fairness Metrics
 
-A simple way to assess the fairness of a model is to find a definition of fairness that is relevant to a problem at hand. We might for example define a model to be fair if the chance to be accepted for a job given you are qualified is independent of a protected attribute e.g. `gender`. This can e.g. be measured using the `true positive rate`(TPR): in `mlr3` this metric is called `"classif.tpr"`. In this case we measure discrepancies between groups by computing differences `(-)` but we could also compute quotients.
+One way to assess the fairness of a model is to find a definition of fairness that is relevant to a problem at hand. We might for example define a model to be fair if the chance to be accepted for a job given you are qualified is independent of a protected attribute e.g. `gender`. This can e.g. be measured using the `true positive rate`(TPR): in `mlr3` this metric is called `"classif.tpr"`. In this case we measure discrepancies between groups by computing differences `(-)` but we could also compute quotients.
 In practice, we often compute absolute differences.
 
 $$
@@ -47,7 +55,7 @@ knitr::kable(mlr3fairness:::mlr_measures_fairness)
 ## Assessing for Bias: A first look
 
 This vignette assumes that you are familiar with the basics of `mlr3` and it's core objects.
-The [mlr3 book](https://mlr3book.mlr-org.com/index.html) can be a great ressource in case you want to learn more about mlr3's internals.
+The [mlr3 book](https://mlr3book.mlr-org.com/) can be a great resource in case you want to learn more about mlr3's internals.
 
 We first start by training a model for which we want to conduct an audit.
 For this example, we use the `adult_train` dataset.
@@ -140,8 +148,8 @@ While fairness measures are widely defined or used with binary protected attribu
 fairness measures such that they work with non-binary valued protected attributes.
 
 In order to do this, we have to supply an `operation` that reduces the desired metric measured in each subgroup
-to a single value. Two examples for such operations are `groupdiff_absdiff` and `groupdiff_tau` but
-custom functions can also be applied. Note, that **mlr3** `Measure`s are designed for a scalar output
+to a single value. Two examples for such operations are `groupdiff_absdiff` and `groupdiff_tau` but custom functions can also be applied. 
+Note, that **mlr3** `Measure`s are designed for a scalar output
 and `operation` therefore always has to result in a single scalar value.
 
 ## Composite Fairness Measures
@@ -160,13 +168,14 @@ m = MeasureFairnessComposite$new(measures = ms, aggfun = mean)
 
 ## How to compare the fairness performance between different learners using Benchmarks
 
-In this example, we create a `BenchmarkInstance`. Then by using `aggregate()` function they could access the fairness measures easily. The following example demonstrates the process to evaluate the fairness metrics on Benchmark Results:
+In this example, we create a `BenchmarkInstance`. Then by using `aggregate()` function they could access the fairness measures easily. 
+The following example demonstrates the process to evaluate the fairness metrics on Benchmark Results:
 
-```{r}
+```{r, warning = FALSE}
 design = benchmark_grid(
-  tasks = tsks("compas"),
+  tasks = tsks("adult_train"),
   learners = lrns(c("classif.ranger", "classif.rpart"),
-    predict_type = "prob", predict_sets = c("train", "predict")),
+    predict_type = "prob", predict_sets = c("train", "test")),
   resamplings = rsmps("cv", folds = 3)
 )
 
@@ -199,4 +208,52 @@ mm = msr("fairness.acc", operation = function(x) {x["Female"]})
 l = lrn("classif.rpart")
 prds = l$train(t)$predict(t)
 prds$score(mm, t)
+```
+
+## Individual Fairness
+
+Individual fairness notions were first proposed by [@dwork2012].
+The core idea comes from the principle of *treating similar cases similarly and different cases differently*.
+In contrast to statistical group fairness notions, this notion allows assessing *fairness* at an individual level and 
+would therefore allow determining whether an individual is treated fairly. 
+A more in-depth treatment of individual fairness notions is given by [@binns2020apparent].
+
+In order to translate this from an abstract concept into practice, we need to define two distance metrics:
+- A distance metric $d(x_i, x_j)$ that measures how *similar* two cases $x_i$ and $x_j$ are
+- A distance metric between treatments, here the predictions of our model $f$: $\phi(f({x}_i), f({x}_j))$.
+
+Intuitively, we would now want, that if $d(x_i, x_j)$ is small, the difference in predictions  $\phi(f({x}_i), f({x}_j))$ should also be small.
+This essentially requires Lipschitz continuity of $f$ with respect to $d$. 
+Given a Lipschitz constant $L > 0$, we can write this as:
+
+ $$ \phi(f({x}_i), f({x}_j)) \leq L \cdot d(x_i, x_j).$$
+
+Currently, `mlr3fairness` does not support individual fairness metrics, but we aim to introduce such metrics in the future.
+
+
+## Using metrics for non-mlr3 predictions
+
+We can similarly employ mlr3 metrics on predictions stemming from different models.
+To do so, we create a `data.table` containing the different components.
+
+```{r}
+# Get adult data as a data.table
+train = tsk("adult_train")$data()
+mod = rpart::rpart(target ~ ., train)
+
+# Predict on test data
+test = tsk("adult_test")$data()
+yhat = predict(mod, test, type = "vector")
+
+# Convert to a factor with the same levels
+yhat = as.factor(yhat)
+levels(yhat) = levels(test$target)
+
+compute_metrics(
+  data = test, 
+  target = "target",
+  prediction = yhat,
+  protected_attribute = "sex",
+  metrics = msr("fairness.acc")
+)
 ```

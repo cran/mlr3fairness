@@ -51,11 +51,11 @@ ms
 
 m = MeasureFairnessComposite$new(measures = ms, aggfun = mean)
 
-## -----------------------------------------------------------------------------
+## ---- warning = FALSE---------------------------------------------------------
 design = benchmark_grid(
-  tasks = tsks("compas"),
+  tasks = tsks("adult_train"),
   learners = lrns(c("classif.ranger", "classif.rpart"),
-    predict_type = "prob", predict_sets = c("train", "predict")),
+    predict_type = "prob", predict_sets = c("train", "test")),
   resamplings = rsmps("cv", folds = 3)
 )
 
@@ -76,4 +76,25 @@ mm = msr("fairness.acc", operation = function(x) {x["Female"]})
 l = lrn("classif.rpart")
 prds = l$train(t)$predict(t)
 prds$score(mm, t)
+
+## -----------------------------------------------------------------------------
+# Get adult data as a data.table
+train = tsk("adult_train")$data()
+mod = rpart::rpart(target ~ ., train)
+
+# Predict on test data
+test = tsk("adult_test")$data()
+yhat = predict(mod, test, type = "vector")
+
+# Convert to a factor with the same levels
+yhat = as.factor(yhat)
+levels(yhat) = levels(test$target)
+
+compute_metrics(
+  data = test, 
+  target = "target",
+  prediction = yhat,
+  protected_attribute = "sex",
+  metrics = msr("fairness.acc")
+)
 

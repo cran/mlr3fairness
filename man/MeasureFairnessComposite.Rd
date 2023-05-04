@@ -7,7 +7,17 @@
 Computes a composite measure from multiple fairness metrics and aggregates them
 using \code{aggfun} (defaulting to \code{\link[=mean]{mean()}}).
 }
+\section{Protected Attributes}{
+
+The protected attribute is specified as a \code{col_role} in the corresponding \code{\link[=Task]{Task()}}:\cr
+\verb{<Task>$col_roles$pta = "name_of_attribute"} \cr
+This also allows specifying more than one protected attribute,
+in which case fairness will be considered on the level of intersecting groups defined by all columns
+selected as a predicted attribute.
+}
+
 \examples{
+library("mlr3")
 # Equalized Odds Metric
 MeasureFairnessComposite$new(measures = msrs(c("fairness.fpr", "fairness.tpr")))
 
@@ -44,7 +54,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="r">}}\preformatted{MeasureFairnessComposite$new(
   id = NULL,
   measures,
-  aggfun = function(x) mean(x, na.rm = TRUE),
+  aggfun = function(x) mean(x),
   operation = groupdiff_absdiff,
   minimize = TRUE,
   range = c(-Inf, Inf)

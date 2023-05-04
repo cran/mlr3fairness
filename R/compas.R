@@ -10,6 +10,19 @@
 #' The target column could either be "is_recid" or "two_year_recid", but often "two_year_recid" is prefered.
 #' The column `"sex"` is set as protected attribute, but more often `"race"` is used.
 #'
+#' @section Using COMPAS - Known Problems:
+#' The COMPAS dataset was collected as part of the ProPublica analysis of machine bias in criminal sentencing.
+#' It is important to note, that using COMPAS is generally discouraged for the following reasons:
+#' * The prediction task derived from this dataset has little connection to actually relevant tasks in the
+#'   context of risk assessment instruments.
+#' * Collected data and labels suffer from disparate measurement bias.
+#'
+#' The dataset should therefore not be used to benchmark new fairness algorithms or measures.
+#' For a more in-depth treatment, see Bao et al., 2021: It's COMPASlicated: The Messy Relationship between RAI Datasets and Algorithmic Fairness Benchmarks.
+#' We replicate the dataset here to raise awareness for this issue.
+#' Furthermore, similar issues exist across a wide variety of datasets widely used in the context of fairness auditing
+#' and we, therefore, consider issues, e.g. derived from disparate measurement bias an important issue in the context of fairness audits.
+#'
 #' @section Pre-processing:
 #' * Identifying columns are removed
 #' * Removed the outliers for abs(days_b_screening_arrest) >= 30.
@@ -18,7 +31,7 @@
 #' * Removed observations where score_text != 'N/A'.
 #' * Factorize the features that are categorical.
 #' * Add length of stay (c_jail_out - c_jail_in) in the dataset.
-#' * `Pre-processing Resouce:` @url https://github.com/propublica/compas-analysis/blob/master/Compas%20Analysis.ipynb
+#' * `Pre-processing Resource:` @url https://github.com/propublica/compas-analysis/blob/master/Compas%20Analysis.ipynb
 #'
 #' @section Metadata:
 #' * (integer) age : The age of defendants.
@@ -36,11 +49,13 @@
 #' * (factor) two_year_recid: Binary variable indicate whether defendant is rearrested at within two years.
 #' * (numeric) length_of_stay: The count of days stay in jail.
 #'
-#' @source \url{https://github.com/propublica/compas-analysis}
+#' @source ProPublica Analysis: \url{https://github.com/propublica/compas-analysis}
+#' @source `r format_bib("bao2021s")`
 #'
 #' @docType data
 #' @keywords data
 #' @examples
+#' library("mlr3")
 #' data("compas", package = "mlr3fairness")
 NULL
 
@@ -57,7 +72,8 @@ NULL
 #' ```
 #'
 #' @description
-#' A classification task for the [compas] data set.
+#' Derived tasks: \cr
+#' * `compas` : A classification task for the [compas] data set with the protected attribute 'sex'.
 NULL
 
 get_compas_task = function() { # nocov start
@@ -81,10 +97,10 @@ get_compas_task = function() { # nocov start
 #' ```
 #'
 #' @description
-#' A classification task for the [compas] data set.
-#' The observations have been filtered, keeping only observations with race
-#' `"Caucasian"` and `"African-American"`. The protected attribute has been set
-#' to `"race"`.
+#' * `compas_race_binary` : A classification task for the [compas] data set with the protected attribute 'race'.
+#'   The observations have been filtered, keeping only observations with race
+#'   `"Caucasian"` and `"African-American"`. The protected attribute has been set
+#'   to `"race"`.
 NULL
 
 get_compas_task_race_binary = function() { # nocov start

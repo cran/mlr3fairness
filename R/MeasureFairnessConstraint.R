@@ -4,11 +4,12 @@
 #'   This measure allows constructing for 'constraint' measures of the following form:\cr
 #'   \deqn{min performance subject to fairness < \epsilon}
 #'
+#' @template pta
 #' @seealso mlr_measures_fairness
 #' @export
 #' @examples
-#' # Accurcy subject to equalized odds fairness constraint:
-#' library(mlr3)
+#' # Accuracy subject to equalized odds fairness constraint:
+#' library("mlr3")
 #' t = tsk("adult_train")
 #' learner = lrn("classif.rpart", cp = .01)
 #' learner$train(t)

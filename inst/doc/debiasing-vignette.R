@@ -5,9 +5,9 @@ knitr::opts_chunk$set(
 )
 
 ## -----------------------------------------------------------------------------
+library(mlr3)
 library(mlr3fairness)
 library(mlr3pipelines)
-library(mlr3)
 
 task = tsk("adult_train")
 

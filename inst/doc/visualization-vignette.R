@@ -5,9 +5,9 @@ knitr::opts_chunk$set(
 )
 
 ## ----setup--------------------------------------------------------------------
+library(mlr3)
 library(mlr3fairness)
 library(mlr3learners)
-library(mlr3)
 
 ## -----------------------------------------------------------------------------
 t = tsk("adult_train")
@@ -49,4 +49,38 @@ compare_metrics(bmr, msrs(c("classif.ce", "fairness.fpr", "fairness.tpr")))
 
 ## -----------------------------------------------------------------------------
 bmr$score(msr("fairness.tpr"))
+
+## -----------------------------------------------------------------------------
+set.seed(432L)
+library("iml")
+library("mlr3fairness")
+
+learner = lrn("classif.rpart", predict_type = "prob")
+task = tsk("adult_train")
+# Make the task smaller:
+task$filter(sample(task$row_ids, 2000))
+task$select(c("sex", "relationship", "race", "capital_loss", "age", "education"))
+target = task$target_names
+learner$train(task)
+
+model = Predictor$new(model = learner,
+                      data = task$data()[,.SD, .SDcols = !target],
+                      y = task$data()[, ..target])
+
+custom_metric = function(actual, predicted) {
+  compute_metrics(
+    data = task$data(),
+    target = task$target_names,
+    protected_attribute = task$col_roles$pta,
+    prediction = predicted,
+    metrics = msr("fairness.eod")
+  )
+}
+
+imp <- FeatureImp$new(model, loss = custom_metric, n.repetitions = 5L)
+plot(imp)
+
+## -----------------------------------------------------------------------------
+data = task$data()
+data[, setNames(as.list(summary(relationship)/.N),levels(data$relationship)), by = "sex"]
 
