@@ -15,7 +15,7 @@
 #' @family fairness_reports
 #' @export
 #' @return Invisibly returns the path to the newly created file(s).
-#' @examples
+#' @examplesIf rlang::is_installed("rmarkdown")
 #'   report_file = tempfile()
 #'   report_datasheet(report_file)
 report_datasheet = function(filename = "datasheet.Rmd", edit = FALSE, build = FALSE) {
@@ -39,7 +39,7 @@ report_datasheet = function(filename = "datasheet.Rmd", edit = FALSE, build = FA
 #' @family fairness_reports
 #' @export
 #' @return Invisibly returns the path to the newly created file(s).
-#' @examples
+#' @examplesIf rlang::is_installed("rmarkdown")
 #'   report_file = tempfile()
 #'   report_modelcard(report_file)
 report_modelcard = function(filename = "modelcard.Rmd", edit = FALSE, build = FALSE) {
@@ -61,7 +61,7 @@ report_modelcard = function(filename = "modelcard.Rmd", edit = FALSE, build = FA
 #' @param objects (`list()`)\cr
 #'   A named list of objects required for the fairness report.
 #'   Objects are saved as `<name>.rds` in the new folder created for the report.
-#'   * `task` :: The [`Task`] a report should be created for.
+#'   * `task` :: The [`mlr3::Task`] a report should be created for.
 #'   * `resample_result` ::  A [mlr3::ResampleResult] result to be analyzed.
 #'   * `...` :: any other objects passed on for the report.
 #' @param check_objects (`logical(1)`)\cr
@@ -69,7 +69,7 @@ report_modelcard = function(filename = "modelcard.Rmd", edit = FALSE, build = FA
 #' @family fairness_reports
 #' @export
 #' @return Invisibly returns the path to the newly created file(s).
-#' @examples
+#' @examplesIf rlang::is_installed("rpart") && rlang::is_installed("rmarkdown")
 #'   library("mlr3")
 #'   report_file = tempfile()
 #'   task = tsk("compas")

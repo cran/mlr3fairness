@@ -11,7 +11,7 @@ library(mlr3pipelines)
 
 task = tsk("adult_train")
 
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 library(mlr3misc)
 dt = as.data.table(mlr_pipeops)
 knitr::kable(dt[map_lgl(dt$tags, function(x) "fairness" %in% x)][, c(1,7,8,9,10)])

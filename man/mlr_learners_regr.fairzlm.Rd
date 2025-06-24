@@ -13,9 +13,9 @@ The 'unfairness' parameter is set to 0.05 as a default.
 The optimized fairness metric is statistical parity.
 }
 \section{Dictionary}{
- This \link{Learner} can be instantiated via the
-\link[mlr3misc:Dictionary]{dictionary} \link{mlr_learners} or with the associated
-sugar function \code{\link[=lrn]{lrn()}}:
+ This \link[mlr3:Learner]{mlr3::Learner} can be instantiated via the
+\link[mlr3misc:Dictionary]{dictionary} \link[mlr3:mlr_learners]{mlr3::mlr_learners} or with the associated
+sugar function \code{\link[mlr3:mlr_sugar]{mlr3::lrn()}}:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{mlr_learners$get("regr.fairzlm")
 lrn("regr.fairzlm")
@@ -28,7 +28,7 @@ lrn("regr.fairzlm")
 \item Task type: \dQuote{regr}
 \item Predict Types: \dQuote{response}
 \item Feature Types: \dQuote{integer}, \dQuote{numeric}, \dQuote{factor}, \dQuote{ordered}
-\item Required Packages: \CRANpkg{mlr3}, \CRANpkg{fairml}
+\item Required Packages: \CRANpkg{mlr3}, \CRANpkg{fairml}, \CRANpkg{CVXR}
 }
 }
 
@@ -41,6 +41,7 @@ lrn("regr.fairzlm")
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("fairml")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library("mlr3")
 # stop example failing with warning if package not installed
 learner = suppressWarnings(mlr3::lrn("regr.fairzlm"))
@@ -48,6 +49,7 @@ print(learner)
 
 # available parameters:
 learner$param_set$ids()
+\dontshow{\}) # examplesIf}
 }
 \references{
 BJ Z, I V, M G, KP G (2019).
@@ -83,12 +85,15 @@ pfistfl
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="base_learner"><a href='../../mlr3/html/Learner.html#method-Learner-base_learner'><code>mlr3::Learner$base_learner()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="configure"><a href='../../mlr3/html/Learner.html#method-Learner-configure'><code>mlr3::Learner$configure()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="encapsulate"><a href='../../mlr3/html/Learner.html#method-Learner-encapsulate'><code>mlr3::Learner$encapsulate()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href='../../mlr3/html/Learner.html#method-Learner-format'><code>mlr3::Learner$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href='../../mlr3/html/Learner.html#method-Learner-help'><code>mlr3::Learner$help()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href='../../mlr3/html/Learner.html#method-Learner-predict'><code>mlr3::Learner$predict()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata"><a href='../../mlr3/html/Learner.html#method-Learner-predict_newdata'><code>mlr3::Learner$predict_newdata()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="print"><a href='../../mlr3/html/Learner.html#method-Learner-print'><code>mlr3::Learner$print()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset"><a href='../../mlr3/html/Learner.html#method-Learner-reset'><code>mlr3::Learner$reset()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="selected_features"><a href='../../mlr3/html/Learner.html#method-Learner-selected_features'><code>mlr3::Learner$selected_features()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train"><a href='../../mlr3/html/Learner.html#method-Learner-train'><code>mlr3::Learner$train()</code></a></span></li>
 </ul>
 </details>

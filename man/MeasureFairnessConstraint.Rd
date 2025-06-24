@@ -9,7 +9,7 @@ This measure allows constructing for 'constraint' measures of the following form
 }
 \section{Protected Attributes}{
 
-The protected attribute is specified as a \code{col_role} in the corresponding \code{\link[=Task]{Task()}}:\cr
+The protected attribute is specified as a \code{col_role} in the corresponding \code{\link[mlr3:Task]{mlr3::Task()}}:\cr
 \verb{<Task>$col_roles$pta = "name_of_attribute"} \cr
 This also allows specifying more than one protected attribute,
 in which case fairness will be considered on the level of intersecting groups defined by all columns
@@ -17,6 +17,7 @@ selected as a predicted attribute.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("rpart")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Accuracy subject to equalized odds fairness constraint:
 library("mlr3")
 t = tsk("adult_train")
@@ -25,6 +26,7 @@ learner$train(t)
 measure = msr("fairness.constraint", id = "acc_tpr", msr("classif.acc"), msr("fairness.tpr"))
 predictions = learner$predict(t)
 predictions$score(measure, task = t)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 mlr_measures_fairness

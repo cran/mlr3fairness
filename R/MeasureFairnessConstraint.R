@@ -7,7 +7,7 @@
 #' @template pta
 #' @seealso mlr_measures_fairness
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("rpart")
 #' # Accuracy subject to equalized odds fairness constraint:
 #' library("mlr3")
 #' t = tsk("adult_train")
@@ -74,8 +74,10 @@ MeasureFairnessConstraint = R6::R6Class("MeasureFairnessConstraint", inherit = M
       if (!self$fairness_measure$minimize) { # nocov start
         stop("Only minimized fairness measures are currently supported!")
       } # nocov end
-      fair = self$fairness_measure$score(prediction, task, ...)
-      perf = self$performance_measure$score(prediction, task, ...)
+      args = list(...)
+      args$weights = NULL
+      fair = invoke(self$fairness_measure$score, prediction, task, .args = args)
+      perf = invoke(self$performance_measure$score, prediction, task, .args = args)
 
       assert_number(perf, lower = 0)
       prange = self$performance_measure$range

@@ -20,7 +20,7 @@ File path or name for new file that should be created.}
 A named list of objects required for the fairness report.
 Objects are saved as \verb{<name>.rds} in the new folder created for the report.
 \itemize{
-\item \code{task} :: The \code{\link{Task}} a report should be created for.
+\item \code{task} :: The \code{\link[mlr3:Task]{mlr3::Task}} a report should be created for.
 \item \code{resample_result} ::  A \link[mlr3:ResampleResult]{mlr3::ResampleResult} result to be analyzed.
 \item \code{...} :: any other objects passed on for the report.
 }}
@@ -43,12 +43,14 @@ Uses the awesome markdown template created by Chris Garbin
 \href{https://github.com/fau-masters-collected-works-cgarbin/model-card-template}{from Github}.
 }
 \examples{
+\dontshow{if (rlang::is_installed("rpart") && rlang::is_installed("rmarkdown")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
   library("mlr3")
   report_file = tempfile()
   task = tsk("compas")
   learner = lrn("classif.rpart", predict_type = "prob")
   rr = resample(task, learner, rsmp("cv", folds = 3L))
   report_fairness(report_file, list(task = task, resample_result = rr))
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other fairness_reports: 

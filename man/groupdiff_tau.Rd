@@ -20,7 +20,7 @@ Measured performance in group 1, 2, ...}
 A single \code{numeric}.
 }
 \description{
-\code{groupdiff_tau()} computes \eqn{min(x/y, y/x)}, i.e. the smallest symmetric ratio between \eqn{x} and eqn{y}
+\code{groupdiff_tau()} computes \eqn{min(x/y, y/x)}, i.e. the smallest symmetric ratio between \eqn{x} and \eqn{y}
 that is smaller than 1. If \eqn{x} is a vector, the symmetric ratio between all
 elements in \eqn{x} is computed.
 
@@ -30,7 +30,7 @@ If \eqn{x} is a vector, the symmetric absolute difference between all elements i
 }
 \section{Protected Attributes}{
 
-The protected attribute is specified as a \code{col_role} in the corresponding \code{\link[=Task]{Task()}}:\cr
+The protected attribute is specified as a \code{col_role} in the corresponding \code{\link[mlr3:Task]{mlr3::Task()}}:\cr
 \verb{<Task>$col_roles$pta = "name_of_attribute"} \cr
 This also allows specifying more than one protected attribute,
 in which case fairness will be considered on the level of intersecting groups defined by all columns

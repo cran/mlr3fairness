@@ -26,7 +26,7 @@ rmdfile = report_datasheet(paste0(td, "/datasheet"))
 rmarkdown::render(rmdfile)
 
 ## ----build_fairness_example_for_vignette, echo = FALSE, results = 'hide', message = FALSE, warning = FALSE, error = FALSE----
-task = tsk("adult_train")$filter(1:700)$select(c("age", "education", "marital_status", "sex", "race"))
+task = tsk("adult_train")$filter(1:700)$select(c("education", "marital_status", "sex", "race"))
 learner = lrn("classif.rpart", predict_type = "prob")
 rr = resample(task, learner, rsmp("cv", folds = 5))
 rmdfile = report_fairness(paste0(td, "/fairness"), list(task = task, resample_result = rr))

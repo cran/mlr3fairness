@@ -5,7 +5,7 @@
 #'
 #' @seealso [MeasureFairness], [groupwise_metrics]
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("rpart")
 #' library("mlr3")
 #' # Create MeasureFairness to measure the Predictive Parity.
 #' t = tsk("adult_train")
@@ -16,7 +16,9 @@
 #' predictions$score(measure, task = t)
 MeasureSubgroup = R6::R6Class("MeasureSubgroup", inherit = Measure,
   public = list(
-    #' @template field_base_measure
+    #' @field base_measure (`mlr3::Measure()`)\cr
+    #' The base measure to be used by the fairness measures,
+    #' e.g. [mlr3::msr()] with "classif.fpr" for the false positive rate.
     base_measure = NULL,
 
     #' @field subgroup (`character`)|(`integer`)\cr
@@ -75,7 +77,9 @@ MeasureSubgroup = R6::R6Class("MeasureSubgroup", inherit = Measure,
       assert_subset(unlist(self$subgroup), unlist(map(groups, function(x) {unique(as.character(x))})))
       groups[, row_ids := prediction$row_ids]
       rws = intersect(prediction$row_ids, groups[self$subgroup, on = nms]$row_ids)
-      prediction$clone()$filter(rws)$score(self$base_measure, task = task, ...)
+      args = list(...)
+      args$weights = NULL
+      invoke(prediction$clone()$filter(rws)$score, self$base_measure, task = task, .args = args)
     }
   )
 )
@@ -87,14 +91,14 @@ MeasureSubgroup = R6::R6Class("MeasureSubgroup", inherit = Measure,
 #' Each metric is then evaluated only on predictions made for the given specific subgroup.
 #'
 #' @template param_base_measure
-#' @param task [`Task`] \cr
+#' @param task [`mlr3::Task`] \cr
 #'   [mlr3::Task()] to instantiate measures for.
 #' @param intersect [`logical`] \cr
 #'  Should multiple pta groups be intersected? Defaults to `TRUE`.
 #'  Only relevant if more than one `pta` columns are provided.
 #' @seealso [MeasureSubgroup]
 #' @export
-#' @examples
+#' @examplesIf rlang::is_installed("rpart")
 #'   library("mlr3")
 #'   t = tsk("compas")
 #'   l = lrn("classif.rpart")

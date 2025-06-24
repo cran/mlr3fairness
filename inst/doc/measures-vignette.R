@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 library(mlr3)
 library(mlr3fairness)
 knitr::opts_chunk$set(
@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 knitr::kable(mlr3fairness:::mlr_measures_fairness)
 
 ## -----------------------------------------------------------------------------
@@ -51,7 +51,7 @@ ms
 
 m = MeasureFairnessComposite$new(measures = ms, aggfun = mean)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 design = benchmark_grid(
   tasks = tsks("adult_train"),
   learners = lrns(c("classif.ranger", "classif.rpart"),

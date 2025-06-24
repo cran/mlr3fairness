@@ -18,7 +18,7 @@ Fair Learners in mlr3
 }
 \section{Predefined measures}{
 
-\CRANpkg{mlr3fairness} comes with a set of predefined fairn learners listed below:
+\CRANpkg{mlr3fairness} comes with a set of predefined 'fair learners' listed below:
 
 \tabular{lll}{
 \strong{key} \tab \strong{package} \tab \strong{reference} \cr
@@ -32,7 +32,7 @@ regr.fairnclm     \tab fairml \tab Komiyama et al., 2018
 
 \section{Protected Attributes}{
 
-The protected attribute is specified as a \code{col_role} in the corresponding \code{\link[=Task]{Task()}}:\cr
+The protected attribute is specified as a \code{col_role} in the corresponding \code{\link[mlr3:Task]{mlr3::Task()}}:\cr
 \verb{<Task>$col_roles$pta = "name_of_attribute"} \cr
 This also allows specifying more than one protected attribute,
 in which case fairness will be considered on the level of intersecting groups defined by all columns
@@ -40,8 +40,12 @@ selected as a predicted attribute.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("fairml")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# example code
+
 library("mlr3")
 # Available learners:
 mlr_learners_fairness
+\dontshow{\}) # examplesIf}
 }
 \keyword{datasets}
